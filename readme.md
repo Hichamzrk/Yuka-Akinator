@@ -36,12 +36,12 @@ Stack technique :
    ```sh
    git clone https://github.com/Hichamzrk/Yuka-Akinator.git
    ```
-2. Configurer la base de donnée dans le .env 
-2. A la racine du dossier
+2. Configurer la base de donnée dans le .env A la racine du dossier
+2. Créer la base de donné et insérer les fixtures
    ```sh
    make install
    ```
-3. Ensuite
+3. Ensuite lancer le serveur Symfony
    ```sh
    make start
    ```
