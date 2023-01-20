@@ -11,7 +11,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](/public/images/page_screenshot.jpg)
+[![Product Name Screen Shot App][app-screenshot]](/public/images/page_screenshot.jpg)
 
 
 Application qui trouve le plat auquel tu penses via un arbre de decision à choix binaire. Si l'application ne trouve pas le plat. L'utilisateur rentre le nom du plat et la question qui la différencie du plat précedent. Alors le plat et la question sont inséré au bon endroit dans la base de donnée.
@@ -33,7 +33,7 @@ Stack technique :
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
 1. Cloner le repository 
-        ```sh 
+        ``` 
         git clone https://github.com/Hichamzrk/Yuka-Akinator.git
         ```
 2. Configurer la base de donnée dans le .env 
@@ -51,4 +51,4 @@ _Below is an example of how you can instruct your audience on installing and set
 
 # Voici un exemple d'un arbre construit avec l'application :
 
-[![Product Name Screen Shot][product-screenshot]](/public/images/diagramme-Tree.drawio.png)
+[![Product Name Screen Shot diagramm][diagramm-screenshot]](/public/images/diagramme-Tree.drawio.png)
