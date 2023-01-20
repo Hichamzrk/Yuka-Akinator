@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <img src="/public/images/favicon.png" alt="Logo" width="80" height="80">
+    <img src="/public/images/favicon.png" alt="Logo" width="100" height="100">
 
 <h3 align="center">Yuka Akinator</h3>
 </div>
@@ -12,6 +12,9 @@
 ## About The Project
 
 [![Product Name Screen Shot App][app-screenshot]](/public/images/page_screenshot.jpg)
+<div align="center">
+    <img src="/public/images/page_screenshot.jpg" alt="screen-short-app" width="800" height="400">
+</div>
 
 
 Application qui trouve le plat auquel tu penses via un arbre de decision à choix binaire. Si l'application ne trouve pas le plat. L'utilisateur rentre le nom du plat et la question qui la différencie du plat précedent. Alors le plat et la question sont inséré au bon endroit dans la base de donnée.
