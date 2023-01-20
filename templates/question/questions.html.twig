@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div id="search-container">
+        <div id="question-container">
+            <div id="search-emoji">
+                🤔
+            </div>
+            <div id="dialogue-container">
+                <h1>{{ question }}</h1>
+                <div class="arrow"></div>
+            </div>
+        </div>
+        {{ form_start(form) }}
+            <div id="search-buttons-container">
+                {{ form_widget(form.Non) }}
+                {{ form_widget(form.Oui) }}
+            </div>
+        {{ form_end(form) }}
+
+        <p>Je connais {{ countOfMeals }} plats, je vais trouver en {{ maxNode - currentNode + 1}} question maximum !</p>
+    </div>
+{% endblock %}

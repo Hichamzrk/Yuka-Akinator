@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div id="search-container">
+        <div id="question-container">
+            <div id="search-emoji">
+                😢
+            </div>
+            <div id="dialogue-container">
+                <h1>Oups, j'étais pourtant sûr que c'étais {{ mealName|lower }}.</h1>
+                <div class="arrow"></div>
+            </div>
+        </div>
+        {{ form_start(form) }}
+            <div id="create-input-container">
+                <div>{{ form_label(form.meal_name) }}</div>
+                {{ form_widget(form.meal_name) }}
+                <div>{{ form_label(form.question) }} "{{ mealName }}|lower" ?</div>
+                {{ form_widget(form.question) }}
+                <div>{{ form_label(form.yes_no) }}</div>
+                {{ form_widget(form.yes_no) }}
+                {{ form_widget(form.submit, { 'label': 'Enregister' })  }}
+            </div>
+        {{ form_end(form) }}
+        {% if currentNode is defined %}
+            {% if countOfMeals is defined %}
+                <p>Je connais {{ countOfMeals }} plats, je vais trouver en {{ maxNode - currentNode + 1}} question maximum !</p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
