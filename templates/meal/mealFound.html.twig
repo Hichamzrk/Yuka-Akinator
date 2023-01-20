@@ -17,6 +17,6 @@
                 {{ form_widget(form.Non, { 'label': 'Non pas du tout !' }) }}
             </div>
         {{ form_end(form) }}
-        <p>Je connais {{ countOfMeals }} plats, je crois que j'ai trouvé !</p>
+        <p>Je connais {{ countOfMeals }} {% if countOfMeals < 2 %}plat{% endif %}{% if countOfMeals > 1 %}plats{% endif %}, je crois que j'ai trouvé !</p>
     </div>
 {% endblock %}

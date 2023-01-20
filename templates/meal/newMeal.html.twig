@@ -15,7 +15,7 @@
             <div id="create-input-container">
                 <div>{{ form_label(form.meal_name) }}</div>
                 {{ form_widget(form.meal_name) }}
-                <div>{{ form_label(form.question) }} "{{ mealName }}|lower" ?</div>
+                <div>{{ form_label(form.question) }} "{{ mealName|lower }}" ?</div>
                 {{ form_widget(form.question) }}
                 <div>{{ form_label(form.yes_no) }}</div>
                 {{ form_widget(form.yes_no) }}

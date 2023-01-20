@@ -21,25 +21,8 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-    public function save(Question $entity, bool $flush = false): void
+    public function getMaxNode(): mixed
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(Question $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function getMaxNode(){
         $maxNode = $this->createQueryBuilder('n')
                 ->select('MAX(n.node)')
                 ->getQuery()
