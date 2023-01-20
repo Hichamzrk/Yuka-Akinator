@@ -36,7 +36,7 @@ Stack technique :
    ```sh
    git clone https://github.com/Hichamzrk/Yuka-Akinator.git
    ```
-2. Configurer la base de donnée dans le .env A la racine du dossier
+2. Configurer la base de donnée dans le .env à la racine du dossier
 2. Créer la base de donné et insérer les fixtures
    ```sh
    make install
