@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div id="search-container">
+        <div id="question-container">
+            <div id="search-emoji">
+                😁
+            </div>
+            <div id="dialogue-container">
+                <h1>Je pense que c'est {{ mealName|lower }} !</h1>
+                <div class="arrow"></div>
+            </div>
+        </div>
+        {{ form_start(form) }}
+            <div id="search-buttons-container">
+                {{ form_widget(form.Oui, { 'label': 'Waouh, bien joué !' }) }}
+                {{ form_widget(form.Non, { 'label': 'Non pas du tout !' }) }}
+            </div>
+        {{ form_end(form) }}
+        <p>Je connais {{ countOfMeals }} plats, je crois que j'ai trouvé !</p>
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div id="search-container">
+        <div id="question-container">
+            <div id="search-emoji">
+                😎
+            </div>
+            <div id="dialogue-container">
+                <h1>{{ mealName|capitalize }} ! Héhé, j'en étais sur !</h1>
+                <div class="arrow"></div>
+            </div>
+        </div>
+        <form action="/" method="get">
+            <input id="restartButton" type="submit" value="Rejouer">
+        </form>
+    </div>
+{% endblock %}
