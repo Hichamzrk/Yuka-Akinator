@@ -16,7 +16,7 @@
 </div>
 
 
-Application qui trouve le plat auquel tu penses via un arbre de decision à choix binaire. Si l'application ne trouve pas le plat. L'utilisateur rentre le nom du plat et la question qui la différencie du plat précédent. Alors le plat et la question sont ensuite insérés au bon endroit dans la base de donnée.
+Application qui trouve le plat auquel l'utilisateur penses via un arbre de decision à choix binaire. Si l'application ne trouve pas le plat. L'utilisateur rentre le nom du plat et la question qui la différencie du plat précédent. Alors le plat et la question sont ensuite insérés au bon endroit dans la base de donnée.
 
 
 <!-- GETTING STARTED -->
