@@ -5,9 +5,7 @@ namespace App\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class NewMealType extends AbstractType
@@ -19,7 +17,7 @@ class NewMealType extends AbstractType
                 'label' => "Qu'est ce que c'est du coup ?"
             ])
             ->add('question', TextType::class, [
-                'label' => "Qu'elle question permet de différenciéer de"
+                'label' => "Qu'elle question permet de le différencier de"
             ])
             ->add('yes_no', ChoiceType::class, [
                 'choices' => [

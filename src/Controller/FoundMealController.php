@@ -31,7 +31,7 @@ class FoundMealController extends AbstractController
                     'mealName' => $meal->getName()
                 ]); 
             }
-            
+
             if($mealForm->get('Non')->isClicked()){
                 return $this->redirectToRoute('create_meal', ['id' => $meal->getId()]);
             }

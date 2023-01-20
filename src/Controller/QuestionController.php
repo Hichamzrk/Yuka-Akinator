@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Form\QuestionType;
+use App\Service\MealService;
+use App\Service\QuestionService;
 use App\Repository\MealRepository;
 use App\Repository\QuestionRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,78 +18,48 @@ class QuestionController extends AbstractController
     (   
         public MealRepository $mealRepository,
         public QuestionRepository $questionRepository,
+        public QuestionService $questionService,
+        public MealService $mealService
     ) {}
 
     #[Route('/', name: 'search_meal')]
     public function index(Request $request): Response
     {
-        $questionForm = $this->createForm(QuestionType::class);
-
         $meals = $this->mealRepository->findAll();
-
+        
         if (count($meals) === 1) {
             return $this->redirectToRoute('meal_found', ['id' => $meals[0]->getId()]);
         }
         
         $question = $this->questionRepository->findAll()[0];
-
-        $questionForm->get('next_true_question_id')->setData($question->getNextTrueQuestionId());
-        $questionForm->get('next_false_question_id')->setData($question->getNextFalseQuestionId());
-        $questionForm->get('id')->setData($question->getId());
-
-        $questionForm->handleRequest($request);
+        
+        $form = $this->createForm(QuestionType::class);
+        $questionForm = $this->questionService->handleForm($form, $question)
+                                              ->handleRequest($request);
 
         if ($questionForm->isSubmitted() && $questionForm->isValid()) {
 
-            if($questionForm->get('Oui')->isClicked()){
-                if ($questionForm->get('next_true_question_id')->getData() === null) {
-
-                    $meal = $this->mealRepository->findOneBy([
-                        'last_true_question_id' => $questionForm->get('id')->getData()
-                    ]);
-                    
-                    return $this->redirectToRoute('meal_found', ['id' => $meal->getId()]);
-                }
-
-                if ($this->questionRepository->findOneBy(['id' => $questionForm->get('next_true_question_id')->getData()])) {
-                    $question = $this->questionRepository->findOneBy([
-                        'id' => $questionForm->get('next_true_question_id')->getData()
-                    ]);
-                }
+            $datas = $this->questionService->searchMeal($questionForm);
+            
+            if (get_class($datas) === 'App\Entity\Meal') {
+                return $this->redirectToRoute('meal_found', ['id' => $datas->getId()]);
             }
 
-            if($questionForm->get('Non')->isClicked()){
-                if ($questionForm->get('next_false_question_id')->getData() === null) {
-                    
-                    $meal = $this->mealRepository->findOneBy([
-                        'last_false_question_id' => $questionForm->get('id')->getData()
-                    ]);
-
-                    return $this->redirectToRoute('meal_found', ['id' => $meal->getId()]);
-                }
-                
-                if ($this->questionRepository->findOneBy(['id' => $questionForm->get('next_false_question_id')->getData()])) {
-                    $question = $this->questionRepository->findOneBy([
-                        'id' => $questionForm->get('next_false_question_id')->getData()
-                    ]);
-                }
+            if (get_class($datas) === 'App\Entity\Question') {
+                $question = $datas;
             }
         }
 
-        $questionForm = $this->createForm(QuestionType::class);
+        $form = $this->createForm(QuestionType::class);
+        $questionForm = $this->questionService->handleForm($form, $question);
 
-        $questionForm->get('next_true_question_id')->setData($question->getNextTrueQuestionId());
-        $questionForm->get('next_false_question_id')->setData($question->getNextFalseQuestionId());
-        $questionForm->get('id')->setData($question->getId());
-
-        $maxNode = $this->questionRepository->getMaxNode();
-        $countOfMeals = $this->mealRepository->getCountOfAllMeals();
+        $maxNode = $this->questionService->getMaxNode();
+        $countOfMeals = $this->mealService->getCountOfAllMeals();
 
         return $this->render('/question/questions.html.twig', [
             'form' => $questionForm,
             'question' => $question->getQuestion(),
-            'maxNode' => $maxNode,
-            'currentNode' => $question->getNode(),
+            'numberOfNodesRemaining' => ($maxNode - $question->getNode() + 1),
             'countOfMeals' => $countOfMeals
         ]); 
     }

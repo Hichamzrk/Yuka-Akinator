@@ -18,6 +18,6 @@
             </div>
         {{ form_end(form) }}
 
-        <p>Je connais {{ countOfMeals }} plats, je vais trouver en {{ maxNode - currentNode + 1}} question maximum !</p>
+        <p>Je connais {{ countOfMeals }} {% if countOfMeals < 2 %}plat{% endif %}{% if countOfMeals > 1 %}plats{% endif %}, je vais trouver en {{ numberOfNodesRemaining }} {% if numberOfNodesRemaining < 2 %}question{% endif %}{% if numberOfNodesRemaining > 1 %}questions{% endif %} maximum !</p>
     </div>
 {% endblock %}
