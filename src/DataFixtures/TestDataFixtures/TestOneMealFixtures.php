@@ -1,12 +1,13 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\TestDataFixtures;
 
 use App\Entity\Meal;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-class AppFixtures extends Fixture
+class TestOneMealFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -15,5 +16,10 @@ class AppFixtures extends Fixture
         $manager->persist($meal);
 
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['test'];
     }
 }

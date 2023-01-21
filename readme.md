@@ -45,7 +45,12 @@ Stack technique :
    ```sh
    make start
    ```
-4. Enjoy 🎉
+
+4. Lancer les test
+   ```sh
+   make test
+   ```
+5. Enjoy 🎉
 <!-- ROADMAP -->
 ## Structure
 
