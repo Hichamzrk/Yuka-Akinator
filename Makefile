@@ -7,7 +7,6 @@ install:
 	php bin/console make:migration
 	php bin/console doctrine:schema:update --force
 	php bin/console doctrine:schema:update --force --env=test
-	# php bin/console doctrine:migrations:migrate --no-interaction
 	php bin/console doctrine:fixtures:load --group=dev --no-interaction
 
 start:
