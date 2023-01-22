@@ -1,3 +1,4 @@
+/*templates/questions.html.twig*/
 #question-container{
     display: flex;
 }
@@ -54,6 +55,7 @@
     opacity: 90%;
 }
 
+/*templates/mealFound.html.twig*/
 #restartButton, #new_meal_submit, #question_Oui{
     text-decoration: none;
     width: auto;
@@ -91,6 +93,7 @@ p{
     top: 195px;    
 }
 
+/*templates/createMeal.html.twig*/
 #dialogue-container:before{
     content:"";
     position: absolute;
