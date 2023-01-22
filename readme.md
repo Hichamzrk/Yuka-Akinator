@@ -52,9 +52,9 @@ Stack technique:
    ```
 7. **Enjoy 🎉**
 <!-- ROADMAP -->
-# Structure 📑
+## Structure 📑
 
-## Voici un exemple d'un arbre construit avec l'application :
+### Voici un exemple d'un arbre construit avec l'application :
 
 <div align="center">
     <img src="/public/images/diagramme-Tree.drawio.png" alt="screen-short-diagramm" width="800" height="500">
