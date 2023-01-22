@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class FoundMealController extends AbstractController
 {
     public function __construct
-    (   
+    (
         public MealRepository $mealRepository,
         public QuestionRepository $questionRepository,
     ) {}

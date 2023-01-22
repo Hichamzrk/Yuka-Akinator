@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class QuestionController extends AbstractController
 {
     public function __construct
-    (   
+    (
         public MealRepository $mealRepository,
         public QuestionRepository $questionRepository,
         public QuestionService $questionService,

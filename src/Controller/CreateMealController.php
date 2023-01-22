@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CreateMealController extends AbstractController
 {
     public function __construct
-    (   
+    (
         public MealRepository $mealRepository,
         public QuestionRepository $questionRepository,
         public ManagerRegistry $doctrine,
@@ -33,7 +33,7 @@ class CreateMealController extends AbstractController
             $datas = $form->getData();
 
             $this->mealService->createMeal($lastMeal, $datas);
-            
+
             return $this->render('transitionPage.html.twig');
         }
 
