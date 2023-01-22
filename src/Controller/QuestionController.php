@@ -25,13 +25,13 @@ class QuestionController extends AbstractController
     #[Route('/', name: 'search_meal')]
     public function index(Request $request): Response
     {
-        $meals = $this->mealRepository->findAll();
-        
-        if (count($meals) === 1) {
-            return $this->redirectToRoute('meal_found', ['id' => $meals[0]->getId()]);
+        if ($this->mealService->existOnlyOneMeal()) {
+            return $this->redirectToRoute('meal_found', [
+                'id' => $this->mealService->getTheStartMeal()->getId()
+            ]);
         }
-        
-        $question = $this->questionRepository->findAll()[0];
+
+        $question = $this->questionService->getFirstQuestion();;
         
         $form = $this->createForm(QuestionType::class);
         $questionForm = $this->questionService->handleForm($form, $question)
@@ -40,26 +40,24 @@ class QuestionController extends AbstractController
         if ($questionForm->isSubmitted() && $questionForm->isValid()) {
 
             $datas = $this->questionService->searchMeal($questionForm);
-            
-            if (get_class($datas) === 'App\Entity\Meal') {
+
+            if ($this->questionService->isTheLastQuestion($datas)) {
                 return $this->redirectToRoute('meal_found', ['id' => $datas->getId()]);
             }
 
-            if (get_class($datas) === 'App\Entity\Question') {
-                $question = $datas;
-            }
+            $question = $datas;
         }
 
         $form = $this->createForm(QuestionType::class);
         $questionForm = $this->questionService->handleForm($form, $question);
 
-        $maxNode = $this->questionService->getMaxNode();
+        $numberOfNodesRemaining = $this->questionService->getMaxNode($question->getId());
         $countOfMeals = $this->mealService->getCountOfAllMeals();
 
         return $this->render('/question/questions.html.twig', [
             'form' => $questionForm,
             'question' => $question->getQuestion(),
-            'numberOfNodesRemaining' => ($maxNode - $question->getNode() + 1),
+            'numberOfNodesRemaining' => $numberOfNodesRemaining,
             'countOfMeals' => $countOfMeals
         ]); 
     }

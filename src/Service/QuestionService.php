@@ -57,9 +57,21 @@ class QuestionService
         }
     }
 
-    public function getMaxNode(): Int
+    public function getMaxNode(int $questionNodeId): Int
     {
-        return $this->questionRepository->getMaxNode();
+        $longestBranch = 1;
+        $questionNode = $this->questionRepository->findOneBy(['id' => $questionNodeId]);
+
+        $nextTrueQuestionId = $questionNode->getNextTrueQuestionId();
+        $nextFalseQuestionId = $questionNode->getNextFalseQuestionId();
+        if ($nextTrueQuestionId != null) {
+            $longestBranch = max($longestBranch, $this->getMaxNode($nextTrueQuestionId) + 1);
+        }
+        if ($nextFalseQuestionId != null) {
+            $longestBranch = max($longestBranch, $this->getMaxNode($nextFalseQuestionId) + 1);
+        }
+
+        return $longestBranch;
     }
 
     public function handleForm(FormInterface $questionForm, Question $question): FormInterface
@@ -69,5 +81,21 @@ class QuestionService
         $questionForm->get('id')->setData($question->getId());
 
         return $questionForm;
+    }
+
+    public function getFirstQuestion(): Question
+    {
+        $question = $this->questionRepository->findStartQuestion();
+
+        return $question;
+    }
+
+    public function isTheLastQuestion($datas): bool
+    {
+        if (get_class($datas) === 'App\Entity\Meal') {
+            return true;
+        }
+        
+        return false;
     }
 }

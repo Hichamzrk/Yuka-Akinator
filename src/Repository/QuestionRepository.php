@@ -30,4 +30,17 @@ class QuestionRepository extends ServiceEntityRepository
 
         return $maxNode;
     }
+
+    public function findStartQuestion(): Question
+    {
+        $qb = $this->createQueryBuilder('q');
+        $question = $qb
+            ->select('q')
+            ->orderBy('q.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $question;
+    }
 }

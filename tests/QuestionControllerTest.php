@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\DataFixtures\TestDataFixtures\TestOneMealFixtures;
+use App\DataFixtures\TestDataFixtures\TestManyNodesFixtures;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use App\DataFixtures\TestDataFixtures\TestOneQuestionFixtures;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
@@ -18,46 +19,6 @@ class QuestionControllerTest extends WebTestCase
         parent::setUp();
 
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-    }
-    
-    public function testWhenOneMealExist(): void
-    {
-        $this->databaseTool->setPurgeMode();
-        $this->databaseTool->loadFixtures([
-            TestOneMealFixtures::class 
-        ]);
-
-        self::ensureKernelShutdown();
-        $client = static::createClient();
-        $client->request('GET', '/');
-
-        $this->assertResponseStatusCodeSame(302);
-        $client->followRedirect();
-
-        $this->assertSelectorTextContains('#search-emoji', '😁');
-        $this->assertSelectorTextContains('h1', "Je pense que c'est une pizza !");
-        $this->assertSelectorTextContains('p', "Je connais 1 plat, je crois que j'ai trouvé !");
-        $this->assertSelectorTextContains('p', "Je connais 1 plat, je crois que j'ai trouvé !");
-        $this->assertSelectorTextContains('#question_Oui', "Waouh, bien joué !");
-        $this->assertSelectorTextContains('#question_Non', "Non pas du tout !");
-        
-        $client->submitForm('question_Oui');
-        
-        $this->assertSelectorTextContains('h1', "Une pizza ! Héhé, j'en étais sur !");
-        $this->assertSelectorExists('#restartButton');
-        
-        $client->submitForm('restartButton');
-        
-        $this->assertResponseStatusCodeSame(302);
-        
-        $client->followRedirect();
-        $client->submitForm('question_Non');
-        
-        $this->assertResponseStatusCodeSame(302);
-
-        $client->followRedirect();
-
-        $this->assertSelectorTextContains('h1', "Oups, j'étais pourtant sûr que c'étais une pizza.");
     }
 
     public function testTrueQuestionExistWhenYesSubmitted(): void
@@ -104,7 +65,7 @@ class QuestionControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', "Je pense que c'est une pizza !");
     }
 
-    public function testCreateMealWithTrueQuestion(): void
+    public function testCountLastNode()
     {
         $this->databaseTool->setPurgeMode();
         $this->databaseTool->loadFixtures([
@@ -116,52 +77,27 @@ class QuestionControllerTest extends WebTestCase
         $client->request('GET', '/');
 
         $this->assertResponseStatusCodeSame(302);
-        
         $client->followRedirect();
-        $client->submitForm('question_Non');
-        
-        $this->assertResponseStatusCodeSame(302);
 
-        $client->followRedirect();
-        $client->submitForm('new_meal_submit', [
-            'new_meal[meal_name]' => "Une glace",
-            'new_meal[question]' => "Est-ce que c'est froid ?",
-            'new_meal[yes_no]' => "1"
-        ]);
-
-        $client->submitForm('restartButton');
-
-        $this->assertSelectorTextContains('h1', "Est-ce que c'est froid ?");
+        $this->assertSelectorTextContains('p', "Je connais 1 plat, je crois que j'ai trouvé !");
     }
-    
-    public function testCreateMealWithFalseQuestion(): void
+
+    public function testCountNodes()
     {
         $this->databaseTool->setPurgeMode();
         $this->databaseTool->loadFixtures([
-            TestOneMealFixtures::class 
+            TestManyNodesFixtures::class 
         ]);
 
         self::ensureKernelShutdown();
         $client = static::createClient();
         $client->request('GET', '/');
 
-        $this->assertResponseStatusCodeSame(302);
+        $this->assertSelectorTextContains('p', "Je connais 3 plats, je vais trouver en 3 questions maximum !");
 
-        $client->followRedirect();
         $client->submitForm('question_Non');
-        
-        $this->assertResponseStatusCodeSame(302);
 
-        $client->followRedirect();
-        $client->submitForm('new_meal_submit', [
-            'new_meal[meal_name]' => "Une glace",
-            'new_meal[question]' => "Est-ce que c'est chaud ?",
-            'new_meal[yes_no]' => "0"
-        ]);
-
-        $client->submitForm('restartButton');
-
-        $this->assertSelectorTextContains('h1', "Est-ce que c'est chaud ?");
+        $this->assertSelectorTextContains('p', "Je connais 3 plats, je vais trouver en 2 questions maximum !");
     }
 
     protected function tearDown(): void

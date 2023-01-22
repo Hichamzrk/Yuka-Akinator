@@ -28,67 +28,113 @@ class MealService
         if ($lastQuestion === null) {
             $lastQuestion = $this->questionRepository->findOneBy(['id' => $lastMeal->getLastTrueQuestionId()]);
         }
-
-        $newQuestion = new Question();
-
-        $newQuestion->setNode(1);
+        
+        $node = 1;
         
         if ($lastQuestion !== null) {
-            $newQuestion->setNode(($lastQuestion->getNode() + 1));
+            $node = $lastQuestion->getNode() + 1;
         }
 
-        $newQuestion->setQuestion($datas['question']);
+        $newQuestion = $this->createNewQuestion($datas['question'], $node);
 
-        $entityManager = $this->doctrine->getManager();
-
-        $entityManager->persist($newQuestion);
-        $entityManager->flush();
-        $entityManager->refresh($newQuestion);
-
-        if ($lastMeal->getLastFalseQuestionId() !== null) {
-
-            $lastQuestion->setNextFalseQuestionId($newQuestion->getId());
-            $entityManager->persist($lastQuestion);
-            $entityManager->flush();
-        }
-
-
-        if ($lastMeal->getLastTrueQuestionId() !== null) {
-
-            $lastQuestion->setNextTrueQuestionId($newQuestion->getId());
-            $entityManager->persist($lastQuestion);
-            $entityManager->flush();
-        }
-
-        $newMeal = new Meal();
+        $this->modifyQuestion($lastQuestion, $lastMeal->getLastTrueQuestionId(), $lastMeal->getLastFalseQuestionId(), $newQuestion->getId());
 
         if ($datas['yes_no'] === true) {
-            $newMeal->setLastTrueQuestionId($newQuestion->getId());
-            $newMeal->setLastFalseQuestionId(null);
 
-            $lastMeal->setLastFalseQuestionId($newQuestion->getId());
-            $lastMeal->setLastTrueQuestionId(null);
+            $this->createNewMeal($datas['meal_name'], $newQuestion->getId(), null);
+            $this->modifyMeal($lastMeal, null, $newQuestion->getId());
         }
 
         if ($datas['yes_no'] === false) {
-            $newMeal->setLastFalseQuestionId($newQuestion->getId());
-            $newMeal->setLastTrueQuestionId(null);
+            
+            $this->createNewMeal($datas['meal_name'],null , $newQuestion->getId());
+            $this->modifyMeal($lastMeal, $newQuestion->getId(), null);
 
-            $lastMeal->setLastTrueQuestionId($newQuestion->getId());
-            $lastMeal->setLastFalseQuestionId(null);
         }
-
-        $newMeal->setName($datas['meal_name']);
-
-        $entityManager->persist($newMeal);
-        $entityManager->flush();
-        $entityManager->refresh($newMeal);
-        $entityManager->persist($lastMeal);
-        $entityManager->flush();
     }
 
     public function getCountOfAllMeals(): int
     {
         return $this->mealRepository->getCountOfAllMeals();
+    }
+
+    public function getTheStartMeal(): Meal
+    {
+        $meals = $this->mealRepository->findAll();
+
+        return $meals[0];
+    }
+
+    public function existOnlyOneMeal(): bool
+    {
+        $meals = $this->mealRepository->findAll();
+
+        if (count($meals) === 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function createNewMeal(string $mealName, int|null $newTrueQuestionId, int|null $newFalseQuestionId): void
+    {
+        $entityManager = $this->doctrine->getManager();
+
+        $newMeal = new Meal();
+
+        $newMeal->setLastFalseQuestionId($newFalseQuestionId);
+        $newMeal->setLastTrueQuestionId($newTrueQuestionId);
+
+        $newMeal->setName($mealName);
+
+        $entityManager->persist($newMeal);
+        $entityManager->flush();
+        $entityManager->refresh($newMeal);
+    }
+
+    public function createNewQuestion(string $question, int $node): Question
+    {
+        $entityManager = $this->doctrine->getManager();
+        $newQuestion = new Question();
+        
+        $newQuestion->setNode($node);
+
+        $newQuestion->setQuestion($question);
+
+        $entityManager->persist($newQuestion);
+        $entityManager->flush();
+        $entityManager->refresh($newQuestion);
+
+        return $newQuestion;
+    }
+
+    public function modifyMeal(Meal $lastMeal, int|null $lastTrueQuestionId, int|null $lastFalseQuestionId)
+    {
+        $entityManager = $this->doctrine->getManager();
+
+        $lastMeal->setLastTrueQuestionId($lastTrueQuestionId);
+        $lastMeal->setLastFalseQuestionId($lastFalseQuestionId);
+
+        $entityManager->persist($lastMeal);
+        $entityManager->flush();
+    }
+
+    public function modifyQuestion(Question|null $lastQuestion, int|null $lastTrueQuestionId, int|null $lastFalseQuestionId, int|null $newQuestionId): void
+    {
+        $entityManager = $this->doctrine->getManager();
+
+        if ($lastFalseQuestionId !== null) {
+
+            $lastQuestion->setNextFalseQuestionId($newQuestionId);
+            $entityManager->persist($lastQuestion);
+            $entityManager->flush();
+        }
+
+        if ($lastTrueQuestionId !== null) {
+
+            $lastQuestion->setNextTrueQuestionId($newQuestionId);
+            $entityManager->persist($lastQuestion);
+            $entityManager->flush();
+        }
     }
 }
