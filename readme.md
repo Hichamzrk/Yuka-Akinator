@@ -3,7 +3,7 @@
 <div align="center">
     <img src="/public/images/favicon.png" alt="Logo" width="100" height="100">
 
-<h3 align="center">Yuka Akinator</h3>
+<h1 align="center">Yuka Akinator</h1>
 </div>
 
 
@@ -35,8 +35,8 @@ Stack technique:
    ```sh
    git clone https://github.com/Hichamzrk/Yuka-Akinator.git
    ```
-2. Configurer les login de la base de donnée dans le .env
-3. Configurer les login de la base de donnée de test dans le .env.test à la racine du dossier
+2. Configurer les login de la base de donnée dans le .env à la racine du dossier.
+3. Configurer les login de la base de donnée de test dans le .env.test à la racine du dossier.
 4. Créer la base de donné et insérer les fixtures :
    ```sh
    make install
