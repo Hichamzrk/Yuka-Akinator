@@ -52,7 +52,7 @@ Stack technique:
    ```
 7. **Enjoy 🎉**
 <!-- ROADMAP -->
-### Structure 📑
+# Structure 📑
 
 ## Voici un exemple d'un arbre construit avec l'application :
 
