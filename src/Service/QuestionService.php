@@ -6,6 +6,7 @@ use App\Entity\Meal;
 use App\Entity\Question;
 use App\Repository\MealRepository;
 use App\Repository\QuestionRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormInterface;
 
 class QuestionService
@@ -14,9 +15,10 @@ class QuestionService
     (   
         public MealRepository $mealRepository,
         public QuestionRepository $questionRepository,
+        private ManagerRegistry $doctrine,
     ) {}
     
-    public function searchMeal(FormInterface $questionForm): Question|Meal
+    public function searchNextQuestion(FormInterface $questionForm): Question|Meal
     {
         $isTrue = $questionForm->get('Oui')->isClicked();
         $nextQuestionId = $isTrue ? $questionForm->get('next_true_question_id')->getData() : $questionForm->get('next_false_question_id')->getData();
@@ -74,5 +76,40 @@ class QuestionService
         }
 
         return false;
+    }
+
+    public function modifyQuestion(Question|null $lastQuestion, int|null $lastTrueQuestionId, int|null $lastFalseQuestionId, int|null $newQuestionId): void
+    {
+        $entityManager = $this->doctrine->getManager();
+
+        if ($lastFalseQuestionId !== null) {
+
+            $lastQuestion->setNextFalseQuestionId($newQuestionId);
+            $entityManager->persist($lastQuestion);
+            $entityManager->flush();
+        }
+
+        if ($lastTrueQuestionId !== null) {
+
+            $lastQuestion->setNextTrueQuestionId($newQuestionId);
+            $entityManager->persist($lastQuestion);
+            $entityManager->flush();
+        }
+    }
+
+    public function createNewQuestion(string $question, int $node): Question
+    {
+        $entityManager = $this->doctrine->getManager();
+        $newQuestion = new Question();
+
+        $newQuestion->setNode($node);
+
+        $newQuestion->setQuestion($question);
+
+        $entityManager->persist($newQuestion);
+        $entityManager->flush();
+        $entityManager->refresh($newQuestion);
+
+        return $newQuestion;
     }
 }

@@ -4,22 +4,19 @@ namespace App\Service;
 
 use App\Entity\Meal;
 use App\Entity\Question;
+use App\Service\QuestionService;
 use App\Repository\MealRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class MealService
 {
-    private MealRepository $mealRepository;
-    private QuestionRepository $questionRepository;
-    private ManagerRegistry $doctrine;
-
-    public function __construct(MealRepository $mealRepository, QuestionRepository $questionRepository, ManagerRegistry $doctrine)
-    {
-        $this->mealRepository = $mealRepository;
-        $this->questionRepository = $questionRepository;
-        $this->doctrine = $doctrine;
-    }
+    public function __construct(
+        private MealRepository $mealRepository, 
+        private QuestionRepository $questionRepository, 
+        private ManagerRegistry $doctrine,
+        private QuestionService $questionService
+    ) {}
 
     public function createMeal(Meal $lastMeal, $datas)
     {
@@ -35,9 +32,9 @@ class MealService
             $node = $lastQuestion->getNode() + 1;
         }
 
-        $newQuestion = $this->createNewQuestion($datas['question'], $node);
+        $newQuestion = $this->questionService->createNewQuestion($datas['question'], $node);
 
-        $this->modifyQuestion($lastQuestion, $lastMeal->getLastTrueQuestionId(), $lastMeal->getLastFalseQuestionId(), $newQuestion->getId());
+        $this->questionService->modifyQuestion($lastQuestion, $lastMeal->getLastTrueQuestionId(), $lastMeal->getLastFalseQuestionId(), $newQuestion->getId());
 
         if ($datas['yes_no'] === true) {
 
@@ -92,22 +89,6 @@ class MealService
         $entityManager->refresh($newMeal);
     }
 
-    public function createNewQuestion(string $question, int $node): Question
-    {
-        $entityManager = $this->doctrine->getManager();
-        $newQuestion = new Question();
-
-        $newQuestion->setNode($node);
-
-        $newQuestion->setQuestion($question);
-
-        $entityManager->persist($newQuestion);
-        $entityManager->flush();
-        $entityManager->refresh($newQuestion);
-
-        return $newQuestion;
-    }
-
     public function modifyMeal(Meal $lastMeal, int|null $lastTrueQuestionId, int|null $lastFalseQuestionId)
     {
         $entityManager = $this->doctrine->getManager();
@@ -117,24 +98,5 @@ class MealService
 
         $entityManager->persist($lastMeal);
         $entityManager->flush();
-    }
-
-    public function modifyQuestion(Question|null $lastQuestion, int|null $lastTrueQuestionId, int|null $lastFalseQuestionId, int|null $newQuestionId): void
-    {
-        $entityManager = $this->doctrine->getManager();
-
-        if ($lastFalseQuestionId !== null) {
-
-            $lastQuestion->setNextFalseQuestionId($newQuestionId);
-            $entityManager->persist($lastQuestion);
-            $entityManager->flush();
-        }
-
-        if ($lastTrueQuestionId !== null) {
-
-            $lastQuestion->setNextTrueQuestionId($newQuestionId);
-            $entityManager->persist($lastQuestion);
-            $entityManager->flush();
-        }
     }
 }

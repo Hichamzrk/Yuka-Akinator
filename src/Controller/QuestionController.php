@@ -39,7 +39,7 @@ class QuestionController extends AbstractController
 
         if ($questionForm->isSubmitted() && $questionForm->isValid()) {
 
-            $datas = $this->questionService->searchMeal($questionForm);
+            $datas = $this->questionService->searchNextQuestion($questionForm);
 
             if ($this->questionService->isTheLastQuestion($datas)) {
                 return $this->redirectToRoute('meal_found', ['id' => $datas->getId()]);
