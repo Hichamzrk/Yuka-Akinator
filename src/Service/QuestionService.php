@@ -95,7 +95,7 @@ class QuestionService
         if (get_class($datas) === 'App\Entity\Meal') {
             return true;
         }
-        
+
         return false;
     }
 }
