@@ -17,7 +17,7 @@ class NewMealType extends AbstractType
                 'label' => "Qu'est ce que c'est du coup ?"
             ])
             ->add('question', TextType::class, [
-                'label' => "Qu'elle question permet de le différencier de"
+                'label' => "Quelle question permet de le différencier de"
             ])
             ->add('yes_no', ChoiceType::class, [
                 'choices' => [
@@ -26,7 +26,7 @@ class NewMealType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'label' => "Qu'elle est la réponse ?"
+                'label' => "Quelle est la réponse ?"
             ])
             ->add('submit', SubmitType::class)
         ;
