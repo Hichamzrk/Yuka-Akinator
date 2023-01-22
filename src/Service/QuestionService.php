@@ -18,42 +18,19 @@ class QuestionService
     
     public function searchMeal(FormInterface $questionForm): Question|Meal
     {
-        if($questionForm->get('Oui')->isClicked()){
-            if ($questionForm->get('next_true_question_id')->getData() === null) {
+        $isTrue = $questionForm->get('Oui')->isClicked();
+        $nextQuestionId = $isTrue ? $questionForm->get('next_true_question_id')->getData() : $questionForm->get('next_false_question_id')->getData();
 
-                $meal = $this->mealRepository->findOneBy([
-                    'last_true_question_id' => $questionForm->get('id')->getData()
-                ]);
-                
-                return $meal;
-            }
-
-            if ($this->questionRepository->findOneBy(['id' => $questionForm->get('next_true_question_id')->getData()])) {
-                $question = $this->questionRepository->findOneBy([
-                    'id' => $questionForm->get('next_true_question_id')->getData()
-                ]);
-
-                return $question;
-            }
+        if ($nextQuestionId === null) {
+            $lastQuestionId = $isTrue ? 'last_true_question_id' : 'last_false_question_id';
+            $meal = $this->mealRepository->findOneBy([
+                $lastQuestionId => $questionForm->get('id')->getData()
+            ]);
+            return $meal;
         }
 
-        if($questionForm->get('Non')->isClicked()){
-            if ($questionForm->get('next_false_question_id')->getData() === null) {
-                
-                $meal = $this->mealRepository->findOneBy([
-                    'last_false_question_id' => $questionForm->get('id')->getData()
-                ]);
-
-                return $meal;
-            }
-
-            if ($this->questionRepository->findOneBy(['id' => $questionForm->get('next_false_question_id')->getData()])) {
-                $question = $this->questionRepository->findOneBy([
-                    'id' => $questionForm->get('next_false_question_id')->getData()
-                ]);
-
-                return $question;
-            }
+        if ($question = $this->questionRepository->findOneBy(['id' => $nextQuestionId])) {
+            return $question;
         }
     }
 

@@ -19,4 +19,4 @@ loadFixtures:
 	php bin/console doctrine:fixtures:load --group=dev --no-interaction
 
 test:
-	 php bin/phpunit
+	php bin/phpunit
