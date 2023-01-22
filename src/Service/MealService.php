@@ -46,7 +46,7 @@ class MealService
         }
 
         if ($datas['yes_no'] === false) {
-            
+
             $this->createNewMeal($datas['meal_name'],null , $newQuestion->getId());
             $this->modifyMeal($lastMeal, $newQuestion->getId(), null);
 
@@ -96,7 +96,7 @@ class MealService
     {
         $entityManager = $this->doctrine->getManager();
         $newQuestion = new Question();
-        
+
         $newQuestion->setNode($node);
 
         $newQuestion->setQuestion($question);

@@ -15,48 +15,47 @@
     <img src="/public/images/page_screenshot.jpg" alt="screen-short-app" width="800" height="400">
 </div>
 
-
-Application qui trouve le plat auquel l'utilisateur penses via un arbre de decision à choix binaire. Si l'application ne trouve pas le plat. L'utilisateur rentre le nom du plat et la question qui la différencie du plat précédent. Alors le plat et la question sont ensuite insérés au bon endroit dans la base de donnée.
+**Yuka Akinator** est une application innovante qui aide les utilisateurs à trouver le plat qu'ils ont en tête en utilisant un arbre de décision à choix binaires. Si l'application ne parvient pas à trouver le plat désiré, l'utilisateur peut alors entrer le nom du plat et une question qui permet de le différencier du plat précédemment proposé. Ces informations sont ensuite ajoutées à la base de données pour améliorer les résultats futurs. Avec Yuka Akinator, découvrez de nouveaux plats et élargissez votre horizon culinaire en quelques clics !
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Getting Started ✅
 
 
-### Prerequis
+### Prerequis 🛠
 
-Stack technique :
-* php 8.1
-* Symfony 6.2
-* MySQL 8
+Stack technique:
+* php 8.1 ☑️
+* Symfony 6.2 ☑️
+* MySQL 8 ☑️
 
-### Installation
+### Installation 🟢
 
-1. Cloner le repository
+1. Cloner le repository :
    ```sh
    git clone https://github.com/Hichamzrk/Yuka-Akinator.git
    ```
 2. Configurer les login de la base de donnée dans le .env
 3. Configurer les login de la base de donnée de test dans le .env.test à la racine du dossier
-4. Créer la base de donné et insérer les fixtures
+4. Créer la base de donné et insérer les fixtures :
    ```sh
    make install
    ```
-5. Ensuite lancer le serveur Symfony
+5. Ensuite lancer le serveur Symfony :
    ```sh
    make start
    ```
 
-6. Lancer les test
+6. Lancer les tests :
    ```sh
    make test
    ```
-7. Enjoy 🎉
+7. **Enjoy 🎉**
 <!-- ROADMAP -->
-## Structure
+## Structure 📑
 
 ### Voici un exemple d'un arbre construit avec l'application :
 
 <div align="center">
-    <img src="/public/images/diagramme-Tree.drawio.png" alt="screen-short-diagramm" width="800" height="400">
+    <img src="/public/images/diagramme-Tree.drawio.png" alt="screen-short-diagramm" width="900" height="400">
 </div>
