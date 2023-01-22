@@ -12,7 +12,7 @@
 ## Présentation du projet
 
 <div align="center">
-    <img src="/public/images/page_screenshot.jpg" alt="screen-short-app" width="800" height="400">
+    <img src="/public/images/page_screenshot.jpg" alt="screen-short-app" width="800" height="450">
 </div>
 
 **Yuka Akinator** est une application innovante qui aide les utilisateurs à trouver le plat qu'ils ont en tête en utilisant un arbre de décision à choix binaires. Si l'application ne parvient pas à trouver le plat désiré, l'utilisateur peut alors entrer le nom du plat et une question qui permet de le différencier du plat précédemment proposé. Ces informations sont ensuite ajoutées à la base de données pour améliorer les résultats futurs. Avec Yuka Akinator, découvrez de nouveaux plats et élargissez votre horizon culinaire en quelques clics !
@@ -57,5 +57,5 @@ Stack technique:
 ### Voici un exemple d'un arbre construit avec l'application :
 
 <div align="center">
-    <img src="/public/images/diagramme-Tree.drawio.png" alt="screen-short-diagramm" width="900" height="400">
+    <img src="/public/images/diagramme-Tree.drawio.png" alt="screen-short-diagramm" width="800" height="500">
 </div>
